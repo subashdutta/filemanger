@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Folder Creator</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      input,
+      button {
+        padding: 10px;
+        font-size: 16px;
+      }
+      .folder {
+        cursor: pointer;
+        margin-bottom: 5px;
+      }
+      .back-button {
+        margin-bottom: 15px;
+        cursor: pointer;
+        color: blue;
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Trigger the modal with a button -->
+      <button
+        type="button"
+        class="btn btn-info btn-lg"
+        data-toggle="modal"
+        data-target="#myModal"
+      >
+        createfolder
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">
+                &times;
+              </button>
+            </div>
+         <form id="folderForm">
+        <div class="form-group">
+          <label for="folderName" class="text-center text-lg-center">Folder Name</label>
+          <input type="text" id="folderName" name="folderName" class="justify-content-center" required />
+        </div>
+        <div
+          class="form-group"
+          style="display: none"
+          id="parentFolderContainer"
+        >
+          <label for="parentFolderPath">Parent Folder Path:</label>
+          <input
+            type="text"
+            id="parentFolderPath"
+            name="parentFolderPath"
+            readonly
+          />
+        </div>
+        <button class=" sub" type="submit">Create Folder</button>
+      </form>
+           
+             
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+    <div id="folderFormContainer">
+     
+
+      <form id="fileUploadForm" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="fileUpload">Upload File:</label>
+          <input type="file" id="fileUpload" name="fileUpload" />
+        </div>
+        <button type="submit">Upload</button>
+      </form>
+      
+
+      <form id="createFileForm">
+        <div class="form-group">
+          <label for="fileName">File Name:</label>
+          <input type="text" id="fileName" name="fileName" required />
+        </div>
+        <button type="submit">Create File</button>
+      </form>
+    </div>
+    <div id="result"></div>
+    <h1 class="title">Folder Creator</h1>
+
+    <nav class="navbar navbar-light bg-light justify-content-between">
+
+ 
+<div id="btnContainer">
+<button class="button1">
+  <span class="liquid"></span>  
+  <span id="rename" class="btn-txt">Rename</span>
+</button>
+  <form >
+<input id="search" type="text" name="text" placeholder="Search 'folderName's'" class="input">
+ 
+  </form>
+  
+
+ <select id="sortCriteria">
+    <option value="name">sort by:</option>
+    <option value="type">A to Z</option>
+    <option  value="date">Z to A</option>
+  </select>
+
+
+
+<button  id="Download" class="button">
+Download
+</button>
+  <a id="downloadLink" style="display:none;"></a>
+
+
+
+
+  <button id="deleteButton" class="btn" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+</svg></i></button>
+  <button id="listview" class="btn"><i class="fa fa-bars"></i> </button> 
+  <button class="btn active" id="gridview"><i class="fa fa-th-large"></i> </button>
+</div>
+    <hr />
+
+  
+    <div id="folderStructure">
+    </div>
+     <div id="resultsofsearch">
+      
+     </div>
+     
+    <div id="myElement"></div>
+     <div id="paginationControls" class="pagination"></div>
+
+    <script src="script.js"></script>
+  
+  </body>
+</html>
